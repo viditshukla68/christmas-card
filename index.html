@@ -1,228 +1,291 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>For You ❤️</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
-body{background:#000;overflow:hidden}
-
-.page{
-  position:fixed;
-  inset:0;
-  display:none;
-  background-size:cover;
-  background-position:center;
-}
-
-.page.active{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.card{
-  background:rgba(0,0,0,.65);
-  color:#fff;
-  padding:32px;
-  border-radius:22px;
-  width:88%;
-  max-width:420px;
-  text-align:center;
-  line-height:1.9;
-  z-index:2;
-}
-
-button{
-  margin-top:24px;
-  padding:12px 30px;
-  border:none;
-  border-radius:25px;
-  background:#ff4d6d;
-  color:#fff;
-  font-size:16px;
-}
-
-img{
-  width:120px;
-  border-radius:16px;
-  margin:10px;
-}
-
-/* ❤️ Floating Hearts */
-.heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:18px;
-  animation:floatUp 6s linear forwards;
-  opacity:0.7;
-  z-index:1;
-}
-
-@keyframes floatUp{
-  0%{transform:translateY(0);opacity:0}
-  20%{opacity:0.8}
-  100%{transform:translateY(-110vh);opacity:0}
-}
+  :root{--card-bg:rgba(0,0,0,0.6);--accent:#ff4d6d}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial}
+  html,body{height:100%}
+  body{background:#000;color:#fff;overflow:hidden}
+  .page{position:fixed;inset:0;display:none;background-size:cover;background-position:center;padding:28px}
+  .page.active{display:flex;align-items:center;justify-content:center}
+  .card{background:var(--card-bg);padding:28px;border-radius:18px;width:92%;max-width:520px;text-align:center;line-height:1.8;backdrop-filter:blur(6px)}
+  .card:focus{outline:2px solid rgba(255,77,109,0.12)}
+  .controls{margin-top:18px;display:flex;gap:10px;justify-content:center}
+  button{padding:10px 18px;border-radius:22px;border:none;background:linear-gradient(180deg,var(--accent),#ff2f57);color:#fff;cursor:pointer}
+  button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.08)}
+  img.responsive{width:110px;border-radius:12px;margin:8px;object-fit:cover}
+  /* IMPORTANT: keep pre-wrap so spaces and newlines are preserved when using text nodes */
+  .text{white-space:pre-wrap;text-align:left;margin-top:8px;font-size:17px;min-height:4.2em;word-break:normal}
+  @media (max-width:420px){.card{padding:18px;border-radius:14px}img.responsive{width:90px}}
+  @media (prefers-reduced-motion: reduce){.heart{display:none!important}}
+  .heart{position:fixed;bottom:-10vh;font-size:20px;pointer-events:none;animation:floatUp linear forwards}
+  @keyframes floatUp{0%{transform:translateY(0) scale(.9);opacity:0}10%{opacity:0.9}100%{transform:translateY(-120vh) scale(1.1);opacity:0}}
 </style>
 </head>
-
 <body>
 
 <!-- PAGE 1 -->
-<div class="page active" style="background-image:url('images/page1.jpg')">
-  <div class="card">
+<div class="page active" style="background-image:url('images/page1.jpg')" data-page="1" role="region" aria-label="Page 1">
+  <div class="card" tabindex="0">
     <h2>Merry Christmas 🎄</h2>
-    <p class="text">
-      This isn’t just a card.
-      It’s a small pause in time,
-      carrying thoughts I’ve kept quietly,
-      waiting for the right moment to be felt.
+    <p class="text" data-original>
+This isn’t just a card.
+It’s a small pause in time,
+carrying thoughts I’ve kept quietly,
+waiting for the right moment to be felt.
     </p>
-    <button onclick="next()">Continue</button>
+    <div class="controls">
+      <button id="continueBtn">Continue</button>
+    </div>
   </div>
 </div>
 
 <!-- PAGE 2 -->
-<div class="page" style="background-image:url('images/page2.jpg')">
-  <div class="card">
-    <p class="text">
-      Some people enter your life softly,
-      without noise or effort,
-      yet somehow make everything brighter.
+<div class="page" style="background-image:url('images/page2.jpg')" data-page="2" role="region" aria-label="Page 2">
+  <div class="card" tabindex="0">
+    <p class="text" data-original>
+Some people enter your life softly,
+without noise or effort,
+yet somehow make everything brighter.
 
-      You have that rare presence —
-      calm, warm, and quietly comforting.
+You have that rare presence —
+calm, warm, and quietly comforting.
     </p>
-    <button onclick="next()">Next</button>
+    <div class="controls">
+      <button class="secondary" id="prevBtn2">← Back</button>
+      <button id="nextBtn2">Next</button>
+    </div>
   </div>
 </div>
 
 <!-- PAGE 3 -->
-<div class="page" style="background-image:url('images/page3.jpg')">
-  <div class="card">
-    <img src="images/her1.jpg" alt="photo1">
-    <img src="images/her2.jpg" alt="photo2">
-    <p class="text">
-      There is a quiet beauty in the way you are —
-      in your smile,
-      in your expressions,
-      and in how naturally you exist.
+<div class="page" style="background-image:url('images/page3.jpg')" data-page="3" role="region" aria-label="Page 3">
+  <div class="card" tabindex="0">
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;">
+      <img class="responsive" src="images/her1.jpg" alt="photo1">
+      <img class="responsive" src="images/her2.jpg" alt="photo2">
+    </div>
+    <p class="text" data-original>
+There is a quiet beauty in the way you are —
+in your smile,
+in your expressions,
+and in how naturally you exist.
 
-      You never try to stand out,
-      yet somehow, you always do.
+You never try to stand out,
+yet somehow, you always do.
     </p>
-    <button onclick="next()">One Last Thought</button>
+    <div class="controls">
+      <button class="secondary" id="prevBtn3">← Back</button>
+      <button id="nextBtn3">One Last Thought</button>
+    </div>
   </div>
 </div>
 
 <!-- PAGE 4 -->
-<div class="page" style="background-image:url('images/page4.jpg')">
-  <div class="card">
-    <p class="text">
-      What makes you truly special isn’t something obvious.
-      It’s the kindness in your nature,
-      the sincerity in your presence,
-      and the warmth you bring without realizing it.
+<div class="page" style="background-image:url('images/page4.jpg')" data-page="4" role="region" aria-label="Page 4">
+  <div class="card" tabindex="0">
+    <p class="text" data-original>
+What makes you truly special isn’t something obvious.
+It’s the kindness in your nature,
+the sincerity in your presence,
+and the warmth you bring without realizing it.
 
-      You never need to change,
-      never need to become anything more.
+You never need to change,
+never need to become anything more.
 
-      Stay exactly this way —
-      quietly strong,
-      naturally kind,
-      and effortlessly beautiful ❤️
+Stay exactly this way —
+quietly strong,
+naturally kind,
+and effortlessly beautiful ❤️
 
-      Merry Christmas ✨
+Merry Christmas ✨
     </p>
-    <button onclick="playSong(1)">▶ Play Song 1</button><br>
-    <button onclick="playSong(2)">▶ Play Song 2</button><br>
-    <button onclick="togglePause()">⏸ Pause/Resume</button>
+
+    <div class="controls">
+      <button class="secondary" id="prevBtn4">← Back</button>
+      <button id="song1">▶ Play Song 1</button>
+      <button id="song2">▶ Play Song 2</button>
+    </div>
   </div>
 </div>
 
 <audio id="audio" preload="auto"></audio>
 
 <script>
-/* PAGE NAVIGATION */
-let pages = document.querySelectorAll('.page');
-let index = 0;
-let typingInterval = null;
+(function(){
+  document.addEventListener('DOMContentLoaded', init);
 
-function startTyping(){
-  // clear any previous interval
-  if (typingInterval) {
-    clearInterval(typingInterval);
-    typingInterval = null;
-  }
+  function init(){
+    const pages = Array.from(document.querySelectorAll('.page'));
+    let index = pages.findIndex(p => p.classList.contains('active'));
+    if (index < 0) index = 0;
 
-  const page = pages[index];
-  if (!page) return;
+    // Save original text exactly (no trimming)
+    document.querySelectorAll('.text[data-original]').forEach(el => {
+      el.dataset.orig = (el.textContent || '').replace(/\r/g, '');
+    });
 
-  const el = page.querySelector('.text');
-  if (!el) return;
+    // typing state
+    let typingInterval = null;
+    let typingIndex = 0; // index into characters
+    let currentEl = null;
+    let fullText = '';
 
-  const text = el.innerText;
-  el.innerText = '';
-  let i = 0;
-  typingInterval = setInterval(() => {
-    el.innerText += text.charAt(i) || '';
-    i++;
-    if (i >= text.length) {
-      clearInterval(typingInterval);
-      typingInterval = null;
+    function supportsReducedMotion(){
+      return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
-  }, 30);
-}
 
-function next(){
-  // prevent going past last page
-  if (index >= pages.length - 1) return;
-  // pause audio when moving pages
-  const audio = document.getElementById('audio');
-  if (audio && !audio.paused) audio.pause();
+    // Renders the full text immediately using DOM nodes (safe)
+    function renderFullTextInto(el, text){
+      el.innerHTML = ''; // clear
+      const frag = document.createDocumentFragment();
+      for (let ch of text){
+        if (ch === '\n'){
+          frag.appendChild(document.createElement('br'));
+        } else {
+          frag.appendChild(document.createTextNode(ch));
+        }
+      }
+      el.appendChild(frag);
+    }
 
-  pages[index].classList.remove('active');
-  index++;
-  pages[index].classList.add('active');
-  startTyping();
-}
+    // Typing function: appends character nodes; inserts <br> for '\n'
+    function typeTextFor(el){
+      return new Promise(resolve => {
+        const text = el.dataset.orig || '';
+        // reduced motion -> render instantly
+        if (supportsReducedMotion()){
+          renderFullTextInto(el, text);
+          resolve();
+          return;
+        }
 
-// start typing on load
-startTyping();
+        // ensure whitespace handling (pre-wrap keeps spaces/newlines but we also insert <br>)
+        el.style.whiteSpace = 'pre-wrap';
 
-/* AUDIO CONTROLS */
-function playSong(n){
-  const audio = document.getElementById('audio');
-  if (!audio) return;
-  // files expected in music/ (e.g. music/song1.mp3)
-  audio.src = `music/song${n}.mp3`;
-  audio.currentTime = 0;
-  audio.play().catch(err => {
-    console.warn('Audio play prevented:', err);
-  });
-}
+        // cleanup any previous typing
+        if (typingInterval) { clearInterval(typingInterval); typingInterval = null; }
+        typingIndex = 0;
+        currentEl = el;
+        fullText = text;
+        el.innerHTML = '';
 
-function togglePause(){
-  const audio = document.getElementById('audio');
-  if (!audio) return;
-  if (audio.paused) audio.play().catch(()=>{});
-  else audio.pause();
-}
+        // clicking the text finishes typing
+        function finishNow(){
+          if (typingInterval){ clearInterval(typingInterval); typingInterval = null; }
+          renderFullTextInto(el, fullText);
+          el.removeEventListener('click', finishNow);
+          resolve();
+        }
+        el.addEventListener('click', finishNow, { once: true });
 
-/* HEART EFFECT */
-setInterval(()=>{
-  const heart = document.createElement('div');
-  heart.className = 'heart';
-  heart.innerText = '❤️';
-  heart.style.left = Math.random()*100 + 'vw';
-  heart.style.animationDuration = (4 + Math.random()*3) + 's';
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),7000);
-}, 600);
+        const delay = 28; // ms per character
+
+        typingInterval = setInterval(() => {
+          // safety
+          if (!currentEl){
+            clearInterval(typingInterval);
+            typingInterval = null;
+            resolve();
+            return;
+          }
+
+          if (typingIndex >= fullText.length){
+            clearInterval(typingInterval);
+            typingInterval = null;
+            currentEl.removeEventListener('click', finishNow);
+            resolve();
+            return;
+          }
+
+          const ch = fullText.charAt(typingIndex);
+          if (ch === '\n'){
+            // insert actual line break element
+            currentEl.appendChild(document.createElement('br'));
+          } else {
+            // append a single-character text node (preserves spaces)
+            currentEl.appendChild(document.createTextNode(ch));
+          }
+          typingIndex++;
+        }, delay);
+      });
+    }
+
+    async function startTyping(){
+      const page = pages[index];
+      if (!page) return;
+      const el = page.querySelector('.text');
+      if (!el) return;
+      const card = page.querySelector('.card');
+      if (card) card.focus();
+      await typeTextFor(el);
+    }
+
+    function showPage(newIndex){
+      if (newIndex < 0 || newIndex >= pages.length) return;
+      if (newIndex === index) return;
+      // stop any typing and hearts etc.
+      if (typingInterval){ clearInterval(typingInterval); typingInterval = null; }
+      pages[index].classList.remove('active');
+      index = newIndex;
+      pages[index].classList.add('active');
+      startTyping();
+    }
+
+    // wire buttons
+    document.getElementById('continueBtn').addEventListener('click', () => showPage(1));
+    document.getElementById('nextBtn2')?.addEventListener('click', () => showPage(2));
+    document.getElementById('nextBtn3')?.addEventListener('click', () => showPage(3));
+    document.getElementById('prevBtn2')?.addEventListener('click', () => showPage(0));
+    document.getElementById('prevBtn3')?.addEventListener('click', () => showPage(1));
+    document.getElementById('prevBtn4')?.addEventListener('click', () => showPage(2));
+
+    // simple hearts (non-blocking)
+    if (!supportsReducedMotion()){
+      const maxHearts = 8; let heartCount = 0;
+      function spawn(){
+        if (heartCount >= maxHearts) return;
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = '❤️';
+        h.style.left = Math.max(5, Math.random()*90) + 'vw';
+        h.style.animationDuration = (4 + Math.random()*3) + 's';
+        document.body.appendChild(h);
+        heartCount++;
+        h.addEventListener('animationend', ()=>{ h.remove(); heartCount--; }, { once:true });
+      }
+      setInterval(spawn, 700);
+    }
+
+    // start first page typing
+    startTyping();
+
+    // keyboard: space/enter/right -> next; left -> prev; if typing in progress, finish text first
+    document.addEventListener('keydown', (e) => {
+      const activeTag = document.activeElement && document.activeElement.tagName.toLowerCase();
+      if (activeTag === 'input' || activeTag === 'textarea') return;
+      const page = pages[index];
+      const txt = page && page.querySelector('.text');
+      if ([' ', 'Enter', 'ArrowRight', 'ArrowDown'].includes(e.key)){
+        e.preventDefault();
+        // if typing and not finished, finish it
+        if (typingInterval && txt){
+          renderFullTextInto(txt, txt.dataset.orig || '');
+          if (typingInterval){ clearInterval(typingInterval); typingInterval = null; }
+          return;
+        }
+        showPage(Math.min(index+1, pages.length-1));
+      } else if (['ArrowLeft', 'ArrowUp'].includes(e.key)){
+        e.preventDefault();
+        showPage(Math.max(index-1, 0));
+      }
+    });
+  } // init
+})();
 </script>
-
 </body>
 </html>
