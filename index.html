@@ -103,8 +103,8 @@ img{
 <!-- PAGE 3 -->
 <div class="page" style="background-image:url('images/page3.jpg')">
   <div class="card">
-    <img src="images/her1.jpg">
-    <img src="images/her2.jpg">
+    <img src="images/her1.jpg" alt="photo1">
+    <img src="images/her2.jpg" alt="photo2">
     <p class="text">
       There is a quiet beauty in the way you are —
       in your smile,
@@ -137,34 +137,80 @@ img{
 
       Merry Christmas ✨
     </p>
+    <button onclick="playSong(1)">▶ Play Song 1</button><br>
+    <button onclick="playSong(2)">▶ Play Song 2</button><br>
+    <button onclick="togglePause()">⏸ Pause/Resume</button>
   </div>
 </div>
+
+<audio id="audio" preload="auto"></audio>
 
 <script>
 /* PAGE NAVIGATION */
 let pages = document.querySelectorAll('.page');
 let index = 0;
+let typingInterval = null;
+
+function startTyping(){
+  // clear any previous interval
+  if (typingInterval) {
+    clearInterval(typingInterval);
+    typingInterval = null;
+  }
+
+  const page = pages[index];
+  if (!page) return;
+
+  const el = page.querySelector('.text');
+  if (!el) return;
+
+  const text = el.innerText;
+  el.innerText = '';
+  let i = 0;
+  typingInterval = setInterval(() => {
+    el.innerText += text.charAt(i) || '';
+    i++;
+    if (i >= text.length) {
+      clearInterval(typingInterval);
+      typingInterval = null;
+    }
+  }, 30);
+}
 
 function next(){
+  // prevent going past last page
+  if (index >= pages.length - 1) return;
+  // pause audio when moving pages
+  const audio = document.getElementById('audio');
+  if (audio && !audio.paused) audio.pause();
+
   pages[index].classList.remove('active');
   index++;
   pages[index].classList.add('active');
   startTyping();
 }
 
-/* TYPING EFFECT */
-function startTyping(){
-  const el = pages[index].querySelector('.text');
-  const text = el.innerText;
-  el.innerText = '';
-  let i = 0;
-  const interval = setInterval(()=>{
-    el.innerText += text.charAt(i);
-    i++;
-    if(i >= text.length) clearInterval(interval);
-  }, 30);
-}
+// start typing on load
 startTyping();
+
+/* AUDIO CONTROLS */
+function playSong(n){
+  const audio = document.getElementById('audio');
+  if (!audio) return;
+  // files expected in music/ (e.g. music/song1.mp3)
+  audio.src = `music/song${n}.mp3`;
+  audio.currentTime = 0;
+  audio.play().catch(err => {
+    console.warn('Audio play prevented:', err);
+  });
+}
+
+function togglePause(){
+  const audio = document.getElementById('audio');
+  if (!audio) return;
+  if (audio.paused) audio.play().catch(()=>{});
+  else audio.pause();
+}
 
 /* HEART EFFECT */
 setInterval(()=>{
