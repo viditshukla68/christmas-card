@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Madam Ji 🎄</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body{
+  background:black;
+  overflow:hidden;
+}
+
+/* ---------- Pages ---------- */
+.page{
+  position:absolute;
+  inset:0;
+  display:none;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+.page.active{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ---------- Card ---------- */
+.card{
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  padding:30px;
+  width:90%;
+  max-width:380px;
+  text-align:center;
+  color:white;
+  box-shadow:0 0 30px rgba(255,0,80,0.4);
+}
+
+h1{
+  font-size:26px;
+  margin-bottom:12px;
+}
+
+p{
+  font-size:16px;
+  line-height:1.6;
+  min-height:120px;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:20px;
+  padding:12px 28px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#ff5f8d,#ff3366);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(255,80,120,0.6);
+}
+
+/* ---------- Hearts ---------- */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:18px;
+  animation:floatUp 6s linear infinite;
+  opacity:0.6;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(0);opacity:0}
+  50%{opacity:1}
+  100%{transform:translateY(-110vh);opacity:0}
+}
+
+/* ---------- Photos ---------- */
+.photos{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.photos img{
+  width:120px;
+  height:180px;
+  object-fit:cover;
+  border-radius:16px;
+  border:2px solid #fff;
+}
+
+.label{
+  margin-top:6px;
+  font-size:14px;
+}
+
+/* ---------- Music ---------- */
+.music button{
+  display:block;
+  width:100%;
+  margin:10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" style="background-image:url('./images/page1.jpg')">
+  <div class="card">
+    <h1 id="t1"></h1>
+    <p id="p1"></p>
+    <button class="btn" onclick="nextPage()">Continue 💖</button>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" style="background-image:url('./images/page2.jpg')">
+  <div class="card">
+    <h1 id="t2"></h1>
+    <p id="p2"></p>
+    <button class="btn" onclick="nextPage()">Next ✨</button>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" style="background-image:url('./images/page3.jpg')">
+  <div class="card">
+    <h1 id="t3"></h1>
+    <p id="p3"></p>
+
+    <div class="photos">
+      <div>
+        <img src="./images/her1.jpg">
+        <div class="label">Cutie 💖</div>
+      </div>
+      <div>
+        <img src="./images/her2.jpg">
+        <div class="label">My Girl ✨</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="nextPage()">Almost there 💕</button>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" style="background-image:url('./images/page4.jpg')">
+  <div class="card">
+    <h1 id="t4"></h1>
+    <p id="p4"></p>
+
+    <div class="music">
+      <button class="btn" onclick="playSong(1)">▶ Play Song 1</button>
+      <button class="btn" onclick="playSong(2)">▶ Play Song 2</button>
+      <button class="btn" onclick="pauseSong()">⏸ Pause</button>
+    </div>
+  </div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const pages = document.querySelectorAll(".page");
+let current = 0;
+
+function nextPage(){
+  pages[current].classList.remove("active");
+  current++;
+  pages[current].classList.add("active");
+  startTyping();
+}
+
+/* ---------- Typing ---------- */
+const text = [
+  {
+    t:"Specifically made for you, Madam Ji ✨🎄",
+    p:"This is not just a card. It is a small effort, a quiet thought, and a feeling created only for you."
+  },
+  {
+    t:"If Santa asked me 🎅",
+    p:"If Santa asked me what I want, I would not ask for gifts. I would wish for you to smile, stay safe, and always feel valued."
+  },
+  {
+    t:"Winter feels warmer ❄️",
+    p:"Some people don’t try to be special. They just are. You make simple moments calm and silence feel comforting."
+  },
+  {
+    t:"Just feel it 🎶",
+    p:"These songs are not random. They are pieces of feelings, meant to be heard when words are not enough."
+  }
+];
+
+function typeText(el, txt){
+  el.innerHTML="";
+  let i=0;
+  const interval=setInterval(()=>{
+    el.innerHTML+=txt.charAt(i);
+    i++;
+    if(i===txt.length) clearInterval(interval);
+  },35);
+}
+
+function startTyping(){
+  typeText(document.getElementById("t"+(current+1)), text[current].t);
+  typeText(document.getElementById("p"+(current+1)), text[current].p);
+}
+
+startTyping();
+
+/* ---------- Music ---------- */
+const audio=document.getElementById("audio");
+
+function playSong(n){
+  audio.src = "./music/song"+n+".mp3";
+  audio.play();
+}
+
+function pauseSong(){
+  audio.pause();
+}
+
+/* ---------- Hearts ---------- */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(4+Math.random()*3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7000);
+},500);
+</script>
+
+</body>
+</html>
