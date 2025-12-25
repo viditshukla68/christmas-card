@@ -24,18 +24,20 @@ body{background:#000;overflow:hidden}
 }
 
 .card{
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.65);
   color:#fff;
-  padding:30px;
-  border-radius:20px;
-  width:85%;
-  max-width:380px;
+  padding:32px;
+  border-radius:22px;
+  width:88%;
+  max-width:420px;
   text-align:center;
+  line-height:1.9;
+  z-index:2;
 }
 
 button{
-  margin-top:18px;
-  padding:12px 25px;
+  margin-top:24px;
+  padding:12px 30px;
   border:none;
   border-radius:25px;
   background:#ff4d6d;
@@ -45,8 +47,24 @@ button{
 
 img{
   width:120px;
-  border-radius:15px;
-  margin:8px;
+  border-radius:16px;
+  margin:10px;
+}
+
+/* ❤️ Floating Hearts */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:18px;
+  animation:floatUp 6s linear forwards;
+  opacity:0.7;
+  z-index:1;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(0);opacity:0}
+  20%{opacity:0.8}
+  100%{transform:translateY(-110vh);opacity:0}
 }
 </style>
 </head>
@@ -57,15 +75,27 @@ img{
 <div class="page active" style="background-image:url('images/page1.jpg')">
   <div class="card">
     <h2>Merry Christmas 🎄</h2>
-    <p>This is something special for you.</p>
-    <button onclick="next()">Next</button>
+    <p class="text">
+      This isn’t just a card.
+      It’s a small pause in time,
+      carrying thoughts I’ve kept quietly,
+      waiting for the right moment to be felt.
+    </p>
+    <button onclick="next()">Continue</button>
   </div>
 </div>
 
 <!-- PAGE 2 -->
 <div class="page" style="background-image:url('images/page2.jpg')">
   <div class="card">
-    <p>Some people make life feel warmer without trying.</p>
+    <p class="text">
+      Some people enter your life softly,
+      without noise or effort,
+      yet somehow make everything brighter.
+
+      You have that rare presence —
+      calm, warm, and quietly comforting.
+    </p>
     <button onclick="next()">Next</button>
   </div>
 </div>
@@ -75,23 +105,43 @@ img{
   <div class="card">
     <img src="images/her1.jpg">
     <img src="images/her2.jpg">
-    <p>You look beautiful without knowing it ❤️</p>
-    <button onclick="next()">Music 🎶</button>
+    <p class="text">
+      There is a quiet beauty in the way you are —
+      in your smile,
+      in your expressions,
+      and in how naturally you exist.
+
+      You never try to stand out,
+      yet somehow, you always do.
+    </p>
+    <button onclick="next()">One Last Thought</button>
   </div>
 </div>
 
 <!-- PAGE 4 -->
 <div class="page" style="background-image:url('images/page4.jpg')">
   <div class="card">
-    <button onclick="playSong(1)">▶ Play Song 1</button><br>
-    <button onclick="playSong(2)">▶ Play Song 2</button><br>
-    <button onclick="pauseSong()">⏸ Pause</button>
+    <p class="text">
+      What makes you truly special isn’t something obvious.
+      It’s the kindness in your nature,
+      the sincerity in your presence,
+      and the warmth you bring without realizing it.
+
+      You never need to change,
+      never need to become anything more.
+
+      Stay exactly this way —
+      quietly strong,
+      naturally kind,
+      and effortlessly beautiful ❤️
+
+      Merry Christmas ✨
+    </p>
   </div>
 </div>
 
-<audio id="audio"></audio>
-
 <script>
+/* PAGE NAVIGATION */
 let pages = document.querySelectorAll('.page');
 let index = 0;
 
@@ -99,17 +149,33 @@ function next(){
   pages[index].classList.remove('active');
   index++;
   pages[index].classList.add('active');
+  startTyping();
 }
 
-function playSong(n){
-  const audio = document.getElementById('audio');
-  audio.src = `music/song${n}.mp3`;
-  audio.play();
+/* TYPING EFFECT */
+function startTyping(){
+  const el = pages[index].querySelector('.text');
+  const text = el.innerText;
+  el.innerText = '';
+  let i = 0;
+  const interval = setInterval(()=>{
+    el.innerText += text.charAt(i);
+    i++;
+    if(i >= text.length) clearInterval(interval);
+  }, 30);
 }
+startTyping();
 
-function pauseSong(){
-  document.getElementById('audio').pause();
-}
+/* HEART EFFECT */
+setInterval(()=>{
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.innerText = '❤️';
+  heart.style.left = Math.random()*100 + 'vw';
+  heart.style.animationDuration = (4 + Math.random()*3) + 's';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),7000);
+}, 600);
 </script>
 
 </body>
