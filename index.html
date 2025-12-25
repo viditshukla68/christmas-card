@@ -170,8 +170,15 @@ p{
   </div>
 </div>
 
-<audio id="audio"></audio>
 
+<audio id="audio" preload="auto"></audio>
+
+<script>
+document.body.addEventListener("click", () => {
+  const a = document.getElementById("audio");
+  a.muted = false;
+});
+</script>
 <script>
 const pages = document.querySelectorAll(".page");
 let current = 0;
